@@ -5,25 +5,22 @@ int main(int argc, char**argv)
 {
 
    const char* fileName ="8k.wav";
-   std::vector<int> WavVect;
+   std::vector<int> wavVect;
    FILE *fp = fopen(fileName, "rb");
 
    std::cout<<"\n File open...!!!";
 
-   WavVect = readFileData(fp, fileName);
+   wavVect = readFileData(fp, fileName);
+   long long sampleCount;
 
-
-   for(int i = 10;i<100; i++)
+   for(int i = 10;i<wavVect.size(); i++)
    {
-      std::cout<<"\n"<<WavVect.at(i);
-
+      std::cout<<"\n"<<wavVect.at(i);
+      sampleCount = i;
    }
 
-
-
    fclose(fp);
-
-
+   std::cout<<"\n\n Audio file (.wav) contains "<<sampleCount<<" audio samples.\n\n";
 
    std::cout<<"\n\nDEBUG\n\n";
 
