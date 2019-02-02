@@ -9,7 +9,10 @@ int main(int argc, char**argv)
    std::vector<int> absVect;
    FILE *fp = fopen(fileName, "rb");
 
+   // reads wavfile contents to vector
    wavVect = readFileData(fp, fileName);
+   fclose(fp);
+
    long long sampleCount;
    #ifdef verbose
    for(int i = 10;i < wavVect.size(); i++)
@@ -18,6 +21,8 @@ int main(int argc, char**argv)
       sampleCount = i;
    }
    #endif
+
+   // returns abs val of audio samples
    absVect = get_ABS_sig(wavVect);
 
    #ifdef verbose
@@ -29,7 +34,11 @@ int main(int argc, char**argv)
    std::cout << "\n\n Audio file (" << fileName << ") contains " << sampleCount << " audio samples.\n\n";
    #endif
 
-   fclose(fp);
+   float signalMean = getSignalMean(absVect, 320000);
+
+   std::cout << "\n\n Signal mean value = "<< signalMean;
+
+
 
    std::cout << "\n\nDEBUG\n\n";
 
