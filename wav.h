@@ -109,7 +109,7 @@ std::vector<int> readFileData(FILE*fhandle, const char*fileName)
 	
 	  for(int i=1 ;i<(Subchunk2Size/2)+1;++i)
   	{
-  			audio_data.push_back(Data[i]);
+  		audio_data.push_back(Data[i]);
   	}
   	fclose(fhandle);
 	return(audio_data);
