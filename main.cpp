@@ -13,7 +13,11 @@ int main(int argc, char**argv)
    WavVect = readFileData(fp, fileName);
 
 
+   for(int i = 10;i<100; i++)
+   {
+      std::cout<<"\n"<<WavVect.at(i);
 
+   }
 
 
 
