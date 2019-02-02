@@ -4,7 +4,7 @@
 int main(int argc, char**argv)
 {
 
-   const char* fileName = "8k.wav";
+   const char* fileName = argv[1];
    std::vector<int> wavVect;
    std::vector<int> absVect;
    FILE *fp = fopen(fileName, "rb");
