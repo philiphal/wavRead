@@ -1,3 +1,6 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
 typedef struct {
    
 	FILE *fhandle;
