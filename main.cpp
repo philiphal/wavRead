@@ -1,5 +1,5 @@
 #include"wav.h"
-
+#include"fft.h"
 
 int main(int argc, char**argv)
 {
