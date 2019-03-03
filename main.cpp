@@ -8,9 +8,12 @@ int main(int argc, char**argv)
    std::vector<int> wavVect;
    std::vector<int> absVect;
 
-   readFileData(fileName);
+   wavVect = readFileData(fileName);
 
-
+	for(int i=0; i<100; i++)
+	{
+	  std::cout<<wavVect.at(i)<<"\n";
+	}
 
 
    std::cout << "\n\nDEBUG\n\n";
