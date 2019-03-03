@@ -4,8 +4,8 @@
 
 using namespace std;
 
-int log2(int N)    /*function to calculate the log2(.) of int numbers*/
-{
+//function to calculate the log2(.) of int numbers
+int log2(int N)   {
   int k = N, i = 0;
   while(k) {
     k >>= 1;
@@ -14,14 +14,14 @@ int log2(int N)    /*function to calculate the log2(.) of int numbers*/
   return i - 1;
 }
 
-int check(int n)    //checking if the number of element is a power of 2
-{
+//check if array length is radix 2 compatible
+int checkRadix2(int n)  {
 
   return n > 0 && (n & (n - 1)) == 0;
 }
 
-int reverse(int N, int n)    //calculating revers number
-{
+//calculating reverse number
+int reverse(int N, int n)   {
   int j, p = 0;
   for(j = 1; j <= log2(N); j++) {
     if(n & (1 << (log2(N) - j)))
@@ -30,8 +30,8 @@ int reverse(int N, int n)    //calculating revers number
   return p;
 }
 
-void ordina(complex<double>* f1, int N) //using the reverse order in the array
-{
+//using the reverse order in the array
+void ordina(complex<double>* f1, int N){
   complex<double> f2[MAX];
   for(int i = 0; i < N; i++)
     f2[i] = f1[reverse(N, i)];
@@ -40,10 +40,9 @@ void ordina(complex<double>* f1, int N) //using the reverse order in the array
     f1[j] = f2[j];
 
 }
-void transform(complex<double>* f, int N) //
-{
-  ordina(f, N);    //first: reverse order
-  complex<double> *W;
+//first: reverse order
+void transform(complex<double>* f, int N) {
+  ordina(f, N);     complex<double> *W;
   W = (complex<double> *)malloc(N / 2 * sizeof(complex<double>));
   W[1] = polar(1., -2. * M_PI / N);
   W[0] = 1;
@@ -72,7 +71,7 @@ void transform(complex<double>* f, int N) //
 }
 
 
-
+// compute FFT
 void FFT(complex<double>* f, int N, double d)
 {
   transform(f, N);
