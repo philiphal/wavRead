@@ -1,24 +1,37 @@
-//wav.h
-#include<stdio.h>
-#include<iostream>
-#include<vector>
-#include<cmath>
-#include<fstream>
+typedef struct {
+   
+	FILE *fhandle;
 
-	// Buffers etc..
-	char ChunkID[4], Format[4], Subchunk1ID[4],Subchunk2ID[4];
-	
+	const char * fileName;
+
+	const int size = 4;
+
+	char ChunkID[4];
+	char Format[4];
+	char Subchunk1ID[4];
+	char Subchunk2ID[4];
+
 	int ChunkSize,Subchunk1Size, SampleRate, ByteRate,Subchunk2Size;
-	
+
 	short AudioFormat, NumChannels, BlockAlign, BitsPerSample;
-	
+
 	short *Data;
+
+}wav_struct;
+
+
 //***************************************************************
 //
 //***************************************************************
-std::vector<int> readFileData(FILE*fhandle, const char*fileName)
+std::vector<int> readFileData(const char*wavFileName)
 {
-	fhandle=fopen(fileName,"r");
+	wav_struct wave, *wave_ptr;
+	wave_ptr =  &wave;
+
+	wave_ptr->fileName = wavFileName;
+	wave_ptr->fhandle = fopen(wave_ptr->fileName, "rb");
+
+
 
 	std::vector<int>audio_data;
 	std::vector<char>chunk_ID;
@@ -31,170 +44,86 @@ std::vector<int> readFileData(FILE*fhandle, const char*fileName)
 	
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
 	std::cout<<"\nCHUNK ID: \t ";
-	fread(ChunkID,1,4,fhandle);
+	fread(wave_ptr->ChunkID,1,4,wave_ptr->fhandle);
 	for(int i=0;i<4;i++)
 		{
-		chunk_ID.push_back(ChunkID[i]);
+		chunk_ID.push_back(wave_ptr->ChunkID[i]);
 		std::cout<<chunk_ID.at(i);
 		}
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-	fread(&ChunkSize,4,1,fhandle);
-	std::cout<<"\nCHUNK SIZE: 	 "<<ChunkSize;
+	fread(&wave_ptr->ChunkSize,4,1,wave_ptr->fhandle);
+	std::cout<<"\nCHUNK SIZE: 	 "<<wave_ptr->ChunkSize;
 
 
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
 	std::cout<<"\nFORMAT:   \t ";
-	fread(Format,1,4,fhandle);
+	fread(wave_ptr->Format,1,4,wave_ptr->fhandle);
 	for(int i=0;i<4;i++)
 		{
-		_format.push_back(Format[i]);
+		_format.push_back(wave_ptr->Format[i]);
 		std::cout<<_format.at(i);			
 		}
 	
 	
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-	fread(Subchunk1ID,1,4,fhandle);
+	fread(wave_ptr->Subchunk1ID,1,4,wave_ptr->fhandle);
 	std::cout<<"\nSUB CHUNK1 ID:   ";
 	for(int i=0;i<4;i++)
 		{
-		sub_chunk1_ID.push_back(Subchunk1ID[i]);
+		sub_chunk1_ID.push_back(wave_ptr->Subchunk1ID[i]);
 		std::cout<<sub_chunk1_ID.at(i);			
 		}
 	
 	//$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-	fread(&Subchunk2ID,1,4,fhandle);
+	fread(&wave_ptr->Subchunk2ID,1,4,wave_ptr->fhandle);
 	std::cout<<"\nSUB CHUNK2 ID:   ";
 	for(int i=0;i<4;i++)
 		{
-		sub_chunk2_ID.push_back(Subchunk2ID[i]);
+		sub_chunk2_ID.push_back(wave_ptr->Subchunk2ID[i]);
 		std::cout<<(int)sub_chunk2_ID.at(i);			
 		}
 
 	
-	fread(&AudioFormat,2,1,fhandle);
-	std::cout<<"\nAUDIO FORMAT:    "<<AudioFormat;
+	fread(&wave_ptr->AudioFormat,2,1,wave_ptr->fhandle);
+	std::cout<<"\nAUDIO FORMAT:    "<<wave_ptr->AudioFormat;
 	
-	fread(&NumChannels,2,1,fhandle);
-	std::cout<<"\nNUM CHANNELS:    "<<NumChannels;
+	fread(&wave_ptr->NumChannels,2,1,wave_ptr->fhandle);
+	std::cout<<"\nNUM CHANNELS:    "<<wave_ptr->NumChannels;
 	
-	fread(&SampleRate,4,1,fhandle);
-	std::cout<<"\nSAMPLE RATE:     "<<SampleRate;
+	fread(&wave_ptr->SampleRate,4,1,wave_ptr->fhandle);
+	std::cout<<"\nSAMPLE RATE:     "<<wave_ptr->SampleRate;
 	
-	fread(&ByteRate,4,1,fhandle);
-	std::cout<<"\nBYTE RATE:       "<<ByteRate;
+	fread(&wave_ptr->ByteRate,4,1,wave_ptr->fhandle);
+	std::cout<<"\nBYTE RATE:       "<<wave_ptr->ByteRate;
 	
-	fread(&BlockAlign,2,1,fhandle);
-	std::cout<<"\nBLOCK ALIGN:     "<<BlockAlign;
+	fread(&wave_ptr->BlockAlign,2,1,wave_ptr->fhandle);
+	std::cout<<"\nBLOCK ALIGN:     "<<wave_ptr->BlockAlign;
 	
-	fread(&BitsPerSample,2,1,fhandle);
-	std::cout<<"\nBITS PER SAMPLE: "<<BitsPerSample;
+	fread(&wave_ptr->BitsPerSample,2,1,wave_ptr->fhandle);
+	std::cout<<"\nBITS PER SAMPLE: "<<wave_ptr->BitsPerSample;
 	
-	fread(&Subchunk1Size,4,1,fhandle);
-	std::cout<<"\nSUB CHUNK1 SIZE: "<<Subchunk1Size;
+	fread(&wave_ptr->Subchunk1Size,4,1,wave_ptr->fhandle);
+	std::cout<<"\nSUB CHUNK1 SIZE: "<<wave_ptr->Subchunk1Size;
 	
-	fread(&Subchunk2Size,4,1,fhandle);
-	std::cout<<"\nSUB CHUNK2 SIZE: "<<Subchunk2Size;
+	fread(&wave_ptr->Subchunk2Size,4,1,wave_ptr->fhandle);
+	std::cout<<"\nSUB CHUNK2 SIZE: "<<wave_ptr->Subchunk2Size;
 	
 	std::cout<<"\n\n";
 	
 	
 	// Create an element for every 	sample
-	Data=new short [Subchunk2Size/(BitsPerSample/8)]; 
+	wave_ptr->Data=new short [wave_ptr->Subchunk2Size/(wave_ptr->BitsPerSample/8)]; 
 	
 	// Reading raw audio data
-	fread(Data,BitsPerSample/8,Subchunk2Size/(BitsPerSample/8),fhandle); 
+	fread(wave_ptr->Data,wave_ptr->BitsPerSample/8,wave_ptr->Subchunk2Size/(wave_ptr->BitsPerSample/8),wave_ptr->fhandle); 
 	
 	// Size of wav file is stored in first index	
-	audio_data.push_back(Subchunk2Size/2);
+	audio_data.push_back(wave_ptr->Subchunk2Size/2);
 	
-	  for(int i=1 ;i<(Subchunk2Size/2)+1;++i)
+	  for(int i=1 ;i<(wave_ptr->Subchunk2Size/2)+1;++i)
   	{
-  		audio_data.push_back(Data[i]);
+  		audio_data.push_back(wave_ptr->Data[i]);
   	}
-  	fclose(fhandle);
+  	fclose(wave_ptr->fhandle);
 	return(audio_data);
-}
-
-//***************************************************************
-//
-//***************************************************************
-std::vector<int> get_ABS_sig(std::vector<int>audioSignal)
-{
-		std::vector<int>absSignal;
-		
-		
-		for(int i=1;i<audioSignal.at(0)+1;++i)
-			{
-			
-				absSignal.push_back(std::abs(audioSignal.at(i)));
-				
-			}
-	
-	return(absSignal);
-
-}
-//***************************************************************
-//
-//***************************************************************
-
-void writeSignalToFile(std::vector<int>signal,int signalLength,const char*fileName)
-{
-		std::ofstream myfile;
-		myfile.open (fileName,std::ios::out);
-		for(int i=0; i<signalLength;++i)
-		{
-		myfile<<signal.at(i);
-		myfile<<"\n";
-		}
-		myfile.close();
-}
-
-//***************************************************************
-//
-//***************************************************************
-
-float getSignalMean(std::vector<int>signal,int signalLength)
-{
-			float threshold;
-			uint32_t sum=0;
-		
-		
-		for(int i=0;i<signalLength;++i)
-			{
-			
-				sum+=signal.at(i);
-				
-			}
-			threshold=((float)sum)/signalLength;
-	
-	return(threshold);
-}
-
-//***************************************************************
-//
-//***************************************************************
-void writeFileCharacteristics(FILE*fhandle,const char* fileName)
-{
-
-	// Write the same file
-	fhandle=fopen(fileName,"w");
-	fwrite(ChunkID,1,4,fhandle);
-	fwrite(&ChunkSize,4,1,fhandle);
-	fwrite(Format,1,4,fhandle);
-	fwrite(Subchunk1ID,1,4,fhandle);
-	fwrite(&Subchunk1Size,4,1,fhandle);
-	fwrite(&AudioFormat,2,1,fhandle);
-	fwrite(&NumChannels,2,1,fhandle);
-	fwrite(&SampleRate,4,1,fhandle);
-	fwrite(&ByteRate,4,1,fhandle);
-	fwrite(&BlockAlign,2,1,fhandle);
-	fwrite(&BitsPerSample,2,1,fhandle);
-	fwrite(&Subchunk2ID,1,4,fhandle);
-	fwrite(&Subchunk2Size,4,1,fhandle);
-	fwrite(Data,BitsPerSample/8,Subchunk2Size/(BitsPerSample/8),fhandle);
-
-	fclose(fhandle);
-
-
-
 }
