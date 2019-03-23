@@ -130,3 +130,17 @@ std::vector<int> readFileData(const char*wavFileName)
   	fclose(wave_ptr->fhandle);
 	return(audio_data);
 }
+//***************************************************************
+//	     write wav data to file for verification
+//***************************************************************
+void writeWavData(const char*wavFileName, std::vector<int>wavData, int numIndices)
+{
+	FILE *fp;
+	fp = fopen(wavFileName, "w");
+	for(int i=1; i<numIndices +1; i++)
+	 {
+	  fprintf(fp,"At index %d in wav array: %d\n",i,wavData.at(i));
+	 }
+	fprintf(fp,"\n");
+	fclose(fp);
+}
